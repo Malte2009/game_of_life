@@ -7,12 +7,15 @@
 #include <chrono>
 #include <thread>
 
-
 Game::Game(const int newGameBoardSize) {
     gameBoard = std::vector<std::vector<int>>(newGameBoardSize, std::vector<int>(newGameBoardSize, 0));
 
     windowSize = newGameBoardSize * 20;
     gameBoardSize = newGameBoardSize;
+    speed = 100;
+    isPaused = false;
+    lastPressedKey = 0;
+
 }
 
 void Game::startGame() {
@@ -28,45 +31,23 @@ void Game::startGame() {
 
     EndDrawing();
 
-    bool isPaused = false;
+    int loopSpeed = 10;
+
+    int counter = loopSpeed;
+
+    int keyboardUpdateSpeed = 100;
 
     while (!WindowShouldClose()) {
-        BeginDrawing();
 
-        // 32 = Space
-        if (GetKeyPressed() == 32) isPaused = !isPaused;
+        if (counter > speed && counter > keyboardUpdateSpeed) counter = loopSpeed;
 
+        if (counter % speed == 0) doGameLoop(); // Do game loop every speed / 10 ms
 
-        auto newGameBoard = gameBoard;
+        if (counter % keyboardUpdateSpeed == 0) handleKeyboard(); // Check every 40ms for input and handle it
 
-        for (int x = 0; x < gameBoardSize; x++) {
-            for (int y = 0; y < gameBoard[x].size(); y++) {
-                const int surroundingCells = getAmountOfSurroundingLivingCells(x,y);
+        counter += loopSpeed;
 
-                if (isPaused) continue;
-
-                if (surroundingCells == 2) {
-                    continue;
-                }
-
-                if (surroundingCells == 3) {
-                    newGameBoard[x][y] = 1;
-                    continue;
-                }
-
-                newGameBoard[x][y] = 0;
-            }
-        }
-
-        gameBoard = newGameBoard;
-
-        displayGameBoard();
-
-        ClearBackground(RAYWHITE);
-
-        EndDrawing();
-
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+        std::this_thread::sleep_for(std::chrono::milliseconds(loopSpeed));
     }
 
     CloseWindow();
@@ -105,6 +86,65 @@ void Game::initializeRandom() {
         for (int j = 0; j < gameBoardSize; j++) {
             gameBoard[i][j] = rand() % 2;
         }
+    }
+}
+
+void Game::doGameLoop() {
+    BeginDrawing();
+
+    auto newGameBoard = gameBoard;
+
+    for (int x = 0; x < gameBoardSize; x++) {
+        for (int y = 0; y < gameBoard[x].size(); y++) {
+            const int surroundingCells = getAmountOfSurroundingLivingCells(x,y);
+
+            if (isPaused) continue;
+
+            if (surroundingCells == 2) {
+                continue;
+            }
+
+            if (surroundingCells == 3) {
+                newGameBoard[x][y] = 1;
+                continue;
+            }
+
+            newGameBoard[x][y] = 0;
+        }
+    }
+
+    gameBoard = newGameBoard;
+
+    displayGameBoard();
+
+    ClearBackground(RAYWHITE);
+
+    EndDrawing();
+}
+
+void Game::handleKeyboard() {
+
+    int pressedKey = GetKeyPressed();
+    std::cout << pressedKey << std::endl;
+    switch (pressedKey) {
+        case 32:
+            // space
+            isPaused = !isPaused;
+            break;
+        case 333:
+        case 47:
+            speed += 10;
+            break;
+        case 334:
+        case 93:
+            if (speed == 10) break;
+            speed -= 10;
+            break;
+        case 82:
+            initializeRandom();
+            break;
+        default:
+            break;
     }
 }
 

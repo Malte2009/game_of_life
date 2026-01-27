@@ -12,6 +12,9 @@ class Game {
     std::vector<std::vector<int>> gameBoard;
     int windowSize;
     int gameBoardSize;
+    int speed;
+    bool isPaused;
+    int lastPressedKey;
 
     Game(int newGameBoardSize);
 
@@ -25,6 +28,12 @@ class Game {
     void spawnBlinker(int x, int y);
     void spawnToad(int x, int y);
     void initializeRandom();
+
+    void doGameLoop();
+
+    void handleKeyboard();
+
+    void openSpeedInput();
 };
 
 
