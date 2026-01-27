@@ -33,10 +33,9 @@ void Game::startGame() {
     while (!WindowShouldClose()) {
         BeginDrawing();
 
-        if (GetKeyPressed() == 32) {
-            isPaused = !isPaused;
-            std::cout << "Toggle\n";
-        }
+        // 32 = Space
+        if (GetKeyPressed() == 32) isPaused = !isPaused;
+
 
         auto newGameBoard = gameBoard;
 
@@ -44,7 +43,7 @@ void Game::startGame() {
             for (int y = 0; y < gameBoard[x].size(); y++) {
                 const int surroundingCells = getAmountOfSurroundingLivingCells(x,y);
 
-                //if (isPaused) continue;
+                if (isPaused) continue;
 
                 if (surroundingCells == 2) {
                     continue;
@@ -57,13 +56,11 @@ void Game::startGame() {
 
                 newGameBoard[x][y] = 0;
             }
-
-            gameBoard = newGameBoard;
-
-
-
-            displayGameBoard();
         }
+
+        gameBoard = newGameBoard;
+
+        displayGameBoard();
 
         ClearBackground(RAYWHITE);
 
@@ -105,10 +102,7 @@ void Game::initializeRandom() {
     srand(time(0));
     for (int i = 0; i < gameBoardSize; i++) {
         for (int j = 0; j < gameBoardSize; j++) {
-            int randomNumber = rand() % 3;
-
-            if (randomNumber == 3) continue;
-            gameBoard[i][j] = randomNumber;
+            gameBoard[i][j] = rand() % 2;
         }
     }
 }
