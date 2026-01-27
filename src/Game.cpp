@@ -35,13 +35,13 @@ void Game::startGame() {
 
     int counter = loopSpeed;
 
-    int keyboardUpdateSpeed = 100;
+    int keyboardUpdateSpeed = 40;
 
     while (!WindowShouldClose()) {
 
         if (counter > speed && counter > keyboardUpdateSpeed) counter = loopSpeed;
 
-        if (counter % speed == 0) doGameLoop(); // Do game loop every speed / 10 ms
+        if (counter % speed == 0) doGameLoop(); // Do game loop every speed ms
 
         if (counter % keyboardUpdateSpeed == 0) handleKeyboard(); // Check every 40ms for input and handle it
 
