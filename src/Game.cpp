@@ -35,7 +35,7 @@ void Game::startGame() {
 
     int counter = loopSpeed;
 
-    int keyboardUpdateSpeed = 40;
+    int keyboardUpdateSpeed = 10;
 
     while (!WindowShouldClose()) {
 
