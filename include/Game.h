@@ -16,9 +16,10 @@ class Game {
     bool isPaused;
     int lastPressedKey;
 
-    Game(int newGameBoardSize);
+    explicit Game(int newGameBoardSize);
 
     void startGame();
+    void initializeRandom();
 
     private:
     void displayGameBoard();
@@ -27,13 +28,8 @@ class Game {
     void spawnBeehive(int x, int y);
     void spawnBlinker(int x, int y);
     void spawnToad(int x, int y);
-    void initializeRandom();
 
     void doGameLoop();
-
-    void handleKeyboard();
-
-    void openSpeedInput();
 };
 
 
