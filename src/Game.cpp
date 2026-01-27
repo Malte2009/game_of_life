@@ -6,7 +6,6 @@
 
 #include <chrono>
 #include <thread>
-#include <unistd.h>
 
 
 Game::Game(const int newGameBoardSize) {
@@ -14,8 +13,6 @@ Game::Game(const int newGameBoardSize) {
 
     windowSize = newGameBoardSize * 20;
     gameBoardSize = newGameBoardSize;
-
-
 }
 
 void Game::startGame() {
@@ -31,17 +28,22 @@ void Game::startGame() {
 
     EndDrawing();
 
-    int x;
-    //std::cin >> x;
+    bool isPaused = false;
 
     while (!WindowShouldClose()) {
         BeginDrawing();
-        ClearBackground(RAYWHITE);
+
+        // 32 = Space
+        if (GetKeyPressed() == 32) isPaused = !isPaused;
+
+
         auto newGameBoard = gameBoard;
 
         for (int x = 0; x < gameBoardSize; x++) {
             for (int y = 0; y < gameBoard[x].size(); y++) {
                 const int surroundingCells = getAmountOfSurroundingLivingCells(x,y);
+
+                if (isPaused) continue;
 
                 if (surroundingCells == 2) {
                     continue;
@@ -60,10 +62,11 @@ void Game::startGame() {
 
         displayGameBoard();
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(200));
-
+        ClearBackground(RAYWHITE);
 
         EndDrawing();
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
 
     CloseWindow();
@@ -97,6 +100,7 @@ int Game::getAmountOfSurroundingLivingCells(const int x, const int y) const {
 }
 
 void Game::initializeRandom() {
+    srand(time(0));
     for (int i = 0; i < gameBoardSize; i++) {
         for (int j = 0; j < gameBoardSize; j++) {
             gameBoard[i][j] = rand() % 2;
