@@ -16,10 +16,6 @@ void handleMouse(Game* game) {
         const int mouseXTile = std::ceil(mouseX / game->tileSize);
         const int mouseYTile = std::ceil(mouseY / game->tileSize);
 
-        std::cout << mouseXTile << std::endl;
-
-        std::cout << mouseYTile << std::endl;
-
         game->gameBoard[mouseXTile][mouseYTile] = !game->gameBoard[mouseXTile][mouseYTile];
 
         game->displayGameBoard();

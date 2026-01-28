@@ -51,9 +51,6 @@ void Game::startGame() {
 
     int mouseUpdateSpeed = 1;
 
-    std::cout << xTiles << std::endl;
-
-    std::cout << yTiles << std::endl;
     while (!WindowShouldClose()) {
 
         if (counter > speed && counter > keyboardUpdateSpeed) counter = loopSpeed;
