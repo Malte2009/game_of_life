@@ -43,13 +43,11 @@ void Game::startGame() {
 
     EndDrawing();
 
-    int loopSpeed = 10;
+    const int loopSpeed = 10;
+    const int keyboardUpdateSpeed = 10;
+    const int mouseUpdateSpeed = 1;
 
     int counter = loopSpeed;
-
-    int keyboardUpdateSpeed = 10;
-
-    int mouseUpdateSpeed = 1;
 
     while (!WindowShouldClose()) {
 
@@ -61,7 +59,7 @@ void Game::startGame() {
 
         std::this_thread::sleep_for(std::chrono::milliseconds(loopSpeed));
 
-        if (counter % speed == 0) doGameLoop(); // Do game loop every speed ms
+        if (counter % speed == 0) doGameLoop();
 
         counter += loopSpeed;
     }
