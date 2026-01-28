@@ -7,6 +7,7 @@
 
 #include "../include/Game.h"
 #include "../include/Handlers/keyboardHandler.h"
+#include "Handlers/mouseHandler.h"
 
 Game::Game(const int newGameBoardSize) {
     gameBoard = std::vector<std::vector<int>>(newGameBoardSize, std::vector<int>(newGameBoardSize, 0));
@@ -16,7 +17,8 @@ Game::Game(const int newGameBoardSize) {
     speed = 100;
     isPaused = false;
     lastPressedKey = 0;
-
+    lastPainted = std::chrono::steady_clock::now();
+    tileSize = 20;
 }
 
 void Game::startGame() {
@@ -38,29 +40,39 @@ void Game::startGame() {
 
     int keyboardUpdateSpeed = 10;
 
+    int mouseUpdateSpeed = 1;
+
     while (!WindowShouldClose()) {
 
         if (counter > speed && counter > keyboardUpdateSpeed) counter = loopSpeed;
 
-        if (counter % speed == 0) doGameLoop(); // Do game loop every speed ms
+        if (counter % keyboardUpdateSpeed == 0) handleKeyboard(this);
 
-        if (counter % keyboardUpdateSpeed == 0) handleKeyboard(this); // Check every 40ms for input and handle it
-
-        counter += loopSpeed;
+        if (counter % mouseUpdateSpeed == 0) handleMouse(this);
 
         std::this_thread::sleep_for(std::chrono::milliseconds(loopSpeed));
+
+        if (counter % speed == 0) doGameLoop(); // Do game loop every speed ms
+
+        counter += loopSpeed;
     }
 
     CloseWindow();
 }
 
 void Game::displayGameBoard() {
+    BeginDrawing();
+
     const int cellSize = windowSize / gameBoard.size();
     for (int i = 0; i < gameBoard.size(); i++) {
         for (int j = 0; j < gameBoard[i].size(); j++) {
             DrawRectangle(i * cellSize, j * cellSize, cellSize - cellSize * 0.1, cellSize - cellSize * 0.1, gameBoard[i][j] == 1 ? BLACK : LIGHTGRAY);
         }
     }
+
+    ClearBackground(RAYWHITE);
+
+    EndDrawing();
 }
 
 int Game::getAmountOfSurroundingLivingCells(const int x, const int y) const {
@@ -91,8 +103,6 @@ void Game::initializeRandom() {
 }
 
 void Game::doGameLoop() {
-    BeginDrawing();
-
     auto newGameBoard = gameBoard;
 
     for (int x = 0; x < gameBoardSize; x++) {
@@ -117,12 +127,15 @@ void Game::doGameLoop() {
     gameBoard = newGameBoard;
 
     displayGameBoard();
-
-    ClearBackground(RAYWHITE);
-
-    EndDrawing();
 }
 
+void Game::resetBoard() {
+    for (int i = 0; i < gameBoardSize; i++) {
+        for (int j = 0; j < gameBoardSize; j++) {
+            gameBoard[i][j] = 0;
+        }
+    }
+}
 
 
 void Game::spawnBlock(const int x, const int y) {

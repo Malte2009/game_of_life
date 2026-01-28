@@ -8,7 +8,6 @@
 void handleKeyboard(Game* game) {
 
     int pressedKey = GetKeyPressed();
-    std::cout << pressedKey << std::endl;
     switch (pressedKey) {
         case 32:
             // space
@@ -26,6 +25,8 @@ void handleKeyboard(Game* game) {
         case 82:
             game->initializeRandom();
             break;
+        case 67:
+            game->resetBoard();
         default:
             break;
     }
