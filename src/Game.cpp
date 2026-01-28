@@ -3,11 +3,11 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
-#include <math.h>
+#include <cmath>
 
 #include "../include/Game.h"
 #include "../include/Handlers/keyboardHandler.h"
-#include "Handlers/mouseHandler.h"
+#include "../include/Handlers/mouseHandler.h"
 
 
 Game::Game(const int newXSize, const int newYSize, int newTileSize) {

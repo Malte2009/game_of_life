@@ -1,9 +1,6 @@
-//
-// Created by malte on 26.01.26.
-//
-
 #ifndef GAME_OF_LIFE_GAME_H
 #define GAME_OF_LIFE_GAME_H
+
 #include <vector>
 #include <chrono>
 

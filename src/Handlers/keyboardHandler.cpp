@@ -1,8 +1,6 @@
 #include <raylib.h>
-#include <iostream>
 
 #include "../../include/Handlers/keyboardHandler.h"
-
 #include "../../include/Game.h"
 
 void handleKeyboard(Game* game) {
