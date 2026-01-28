@@ -11,15 +11,17 @@
 class Game {
     public:
     std::vector<std::vector<int>> gameBoard;
-    int windowSize;
-    int gameBoardSize;
+    int xSize;
+    int ySize;
     int speed;
     bool isPaused;
     int lastPressedKey;
     int tileSize;
+    int xTiles;
+    int yTiles;
     std::chrono::steady_clock::time_point lastPainted;
 
-    explicit Game(int newGameBoardSize);
+    explicit Game(int newXSize, int newYSize, int tileSize);
 
     void startGame();
     void initializeRandom();

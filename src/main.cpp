@@ -4,9 +4,7 @@
 #include "raylib.h"
 
 int main() {
-    const int gameBoardSize = 50;
-
-    Game testGame(gameBoardSize);
+    Game testGame(1920, 1000, 4);
 
     testGame.startGame();
 }
