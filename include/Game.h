@@ -16,9 +16,10 @@ class Game {
     int tileSize;
     int xTiles;
     int yTiles;
+    bool isHeadless;
     std::chrono::steady_clock::time_point lastPainted;
 
-    explicit Game(int newXSize, int newYSize, int tileSize);
+    explicit Game(int newXSize, int newYSize, int tileSize, bool isHeadless);
 
     void startGame();
     void initializeRandom();

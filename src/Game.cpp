@@ -10,7 +10,7 @@
 #include "../include/Handlers/mouseHandler.h"
 
 
-Game::Game(const int newXSize, const int newYSize, int newTileSize) {
+Game::Game(const int newXSize, const int newYSize, int newTileSize, bool isHeadless) {
 
     if (newTileSize <= 1) exit(1);
 
@@ -28,20 +28,27 @@ Game::Game(const int newXSize, const int newYSize, int newTileSize) {
     isPaused = false;
     lastPressedKey = 0;
     lastPainted = std::chrono::steady_clock::now();
+
+    this->isHeadless = isHeadless;
 }
 
 void Game::startGame() {
-    InitWindow(xSize, ySize, "Game of Life");
-    SetTargetFPS(60);
+
+    if (!isHeadless) {
+        InitWindow(xSize, ySize, "Game of Life");
+        SetTargetFPS(60);
+    }
 
     initializeRandom();
 
-    BeginDrawing();
-    ClearBackground(RAYWHITE);
+    if (!isHeadless) {
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
 
-    displayGameBoard();
+        displayGameBoard();
 
-    EndDrawing();
+        EndDrawing();
+    }
 
     const int loopSpeed = 10;
     const int keyboardUpdateSpeed = 10;
@@ -49,7 +56,7 @@ void Game::startGame() {
 
     int counter = loopSpeed;
 
-    while (!WindowShouldClose()) {
+    while (!WindowShouldClose() || isHeadless) {
 
         if (counter > speed && counter > keyboardUpdateSpeed) counter = loopSpeed;
 
@@ -132,7 +139,7 @@ void Game::doGameLoop() {
 
     gameBoard = newGameBoard;
 
-    displayGameBoard();
+    if (!isHeadless) displayGameBoard();
 }
 
 void Game::resetBoard() {
