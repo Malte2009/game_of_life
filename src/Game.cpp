@@ -3,26 +3,35 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
-
+#include <math.h>
 
 #include "../include/Game.h"
 #include "../include/Handlers/keyboardHandler.h"
 #include "Handlers/mouseHandler.h"
 
-Game::Game(const int newGameBoardSize) {
-    gameBoard = std::vector<std::vector<int>>(newGameBoardSize, std::vector<int>(newGameBoardSize, 0));
 
-    windowSize = newGameBoardSize * 20;
-    gameBoardSize = newGameBoardSize;
+Game::Game(const int newXSize, const int newYSize, int newTileSize) {
+
+    if (newTileSize <= 1) exit(1);
+
+    xSize = newXSize;
+    ySize = newYSize;
+
+    gameBoard = std::vector<std::vector<int>>(xSize, std::vector<int>(ySize, 0));
+
+    tileSize = newTileSize;
+
+    xTiles = std::floor(xSize / tileSize);
+    yTiles = std::floor(ySize / tileSize);
+
     speed = 100;
     isPaused = false;
     lastPressedKey = 0;
     lastPainted = std::chrono::steady_clock::now();
-    tileSize = 20;
 }
 
 void Game::startGame() {
-    InitWindow(windowSize, windowSize, "Game of Life");
+    InitWindow(xSize, ySize, "Game of Life");
     SetTargetFPS(60);
 
     initializeRandom();
@@ -42,6 +51,9 @@ void Game::startGame() {
 
     int mouseUpdateSpeed = 1;
 
+    std::cout << xTiles << std::endl;
+
+    std::cout << yTiles << std::endl;
     while (!WindowShouldClose()) {
 
         if (counter > speed && counter > keyboardUpdateSpeed) counter = loopSpeed;
@@ -62,15 +74,14 @@ void Game::startGame() {
 
 void Game::displayGameBoard() {
     BeginDrawing();
+    ClearBackground(RAYWHITE);
 
-    const int cellSize = windowSize / gameBoard.size();
-    for (int i = 0; i < gameBoard.size(); i++) {
-        for (int j = 0; j < gameBoard[i].size(); j++) {
-            DrawRectangle(i * cellSize, j * cellSize, cellSize - cellSize * 0.1, cellSize - cellSize * 0.1, gameBoard[i][j] == 1 ? BLACK : LIGHTGRAY);
+    for (int x = 0; x < xTiles; x++) {
+        for (int y = 0; y < yTiles; y++) {
+            //if (y % 2 == 0) continue;
+            DrawRectangle(x * tileSize, y * tileSize, tileSize - tileSize * 0.1, tileSize - tileSize * 0.1, gameBoard[x][y] ? BLACK : LIGHTGRAY);
         }
     }
-
-    ClearBackground(RAYWHITE);
 
     EndDrawing();
 }
@@ -84,7 +95,7 @@ int Game::getAmountOfSurroundingLivingCells(const int x, const int y) const {
 
             if (x + i < 0 | y + j < 0) continue;
 
-            if (x + i >= gameBoardSize | y + j >= gameBoardSize) continue;
+            if (x + i >= xTiles | y + j >= yTiles) continue;
 
             surroundingLivingCells += gameBoard[x + i][y + j];
         }
@@ -95,9 +106,9 @@ int Game::getAmountOfSurroundingLivingCells(const int x, const int y) const {
 
 void Game::initializeRandom() {
     srand(time(0));
-    for (int i = 0; i < gameBoardSize; i++) {
-        for (int j = 0; j < gameBoardSize; j++) {
-            gameBoard[i][j] = rand() % 2;
+    for (int x = 0; x < xTiles; x++) {
+        for (int y = 0; y < yTiles; y++) {
+            gameBoard[x][y] = rand() % 2;
         }
     }
 }
@@ -105,8 +116,8 @@ void Game::initializeRandom() {
 void Game::doGameLoop() {
     auto newGameBoard = gameBoard;
 
-    for (int x = 0; x < gameBoardSize; x++) {
-        for (int y = 0; y < gameBoard[x].size(); y++) {
+    for (int x = 0; x < xTiles; x++) {
+        for (int y = 0; y < yTiles; y++) {
             const int surroundingCells = getAmountOfSurroundingLivingCells(x,y);
 
             if (isPaused) continue;
@@ -130,16 +141,16 @@ void Game::doGameLoop() {
 }
 
 void Game::resetBoard() {
-    for (int i = 0; i < gameBoardSize; i++) {
-        for (int j = 0; j < gameBoardSize; j++) {
-            gameBoard[i][j] = 0;
+    for (int x = 0; x < xTiles; x++) {
+        for (int y = 0; y < yTiles; y++) {
+            gameBoard[x][y] = 0;
         }
     }
 }
 
 
 void Game::spawnBlock(const int x, const int y) {
-    if (x + 1 >= gameBoardSize | y + 1 >= gameBoardSize) return;
+    if (x + 1 >= xTiles | y + 1 >= yTiles) return;
 
     gameBoard[x][y] = 1;
     gameBoard[x + 1][y] = 1;
@@ -150,7 +161,7 @@ void Game::spawnBlock(const int x, const int y) {
 void Game::spawnBeehive(const int x, const int y) {
     if (x < 0 | y < 0) return;
 
-    if (x + 2 >= gameBoardSize | y + 3 >= gameBoardSize) return;
+    if (x + 2 >= xTiles | y + 3 >= yTiles) return;
 
     gameBoard[x + 1][y] = 1;
     gameBoard[x][y + 1] = 1;
@@ -163,7 +174,7 @@ void Game::spawnBeehive(const int x, const int y) {
 void Game::spawnBlinker(const int x, const int y) {
     if (x < 0 | y < 0) return;
 
-    if (x + 3 >= gameBoardSize | y + 3 >= gameBoardSize) return;
+    if (x + 3 >= xTiles | y + 3 >= yTiles) return;
 
     gameBoard[x + 1][y] = 1;
     gameBoard[x + 1][y + 1] = 1;
@@ -173,7 +184,7 @@ void Game::spawnBlinker(const int x, const int y) {
 void Game::spawnToad(int x, int y) {
     if (x < 0 | y < 0) return;
 
-    if (x + 3 >= gameBoardSize | y + 3 >= gameBoardSize) return;
+    if (x + 3 >= xTiles | y + 3 >= yTiles) return;
 
     gameBoard[x][y + 1] = 1;
     gameBoard[x][y + 2] = 1;
