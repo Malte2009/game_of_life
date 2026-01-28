@@ -5,6 +5,7 @@
 #ifndef GAME_OF_LIFE_GAME_H
 #define GAME_OF_LIFE_GAME_H
 #include <vector>
+#include <chrono>
 
 
 class Game {
@@ -15,25 +16,24 @@ class Game {
     int speed;
     bool isPaused;
     int lastPressedKey;
+    int tileSize;
+    std::chrono::steady_clock::time_point lastPainted;
 
-    Game(int newGameBoardSize);
+    explicit Game(int newGameBoardSize);
 
     void startGame();
+    void initializeRandom();
+    void displayGameBoard();
+    void resetBoard();
 
     private:
-    void displayGameBoard();
     int getAmountOfSurroundingLivingCells(int x, int y) const;
     void spawnBlock(int x, int y);
     void spawnBeehive(int x, int y);
     void spawnBlinker(int x, int y);
     void spawnToad(int x, int y);
-    void initializeRandom();
 
     void doGameLoop();
-
-    void handleKeyboard();
-
-    void openSpeedInput();
 };
 
 

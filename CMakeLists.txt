@@ -11,6 +11,10 @@ include_directories(include)
 set(SOURCES
     src/main.cpp
     src/Game.cpp
+        src/Handlers/keyboardHandler.cpp
+        include/Handlers/keyboardHandler.h
+        src/Handlers/mouseHandler.cpp
+        include/Handlers/mouseHandler.h
 )
 
 # Create executable
