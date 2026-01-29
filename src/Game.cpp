@@ -10,16 +10,16 @@
 #include "../include/Handlers/mouseHandler.h"
 
 
-Game::Game(const int newXSize, const int newYSize, int newTileSize) {
+Game::Game(const int XSize, const int YSize, int TileSize, bool showWindow) {
 
-    if (newTileSize <= 1) exit(1);
+    if (TileSize <= 1) exit(1);
 
-    xSize = newXSize;
-    ySize = newYSize;
+    this->xSize = XSize;
+    this->ySize = YSize;
+    this->tileSize = TileSize;
+    this->showWindow = showWindow;
 
     gameBoard = std::vector<std::vector<int>>(xSize, std::vector<int>(ySize, 0));
-
-    tileSize = newTileSize;
 
     xTiles = std::floor(xSize / tileSize);
     yTiles = std::floor(ySize / tileSize);
@@ -31,17 +31,22 @@ Game::Game(const int newXSize, const int newYSize, int newTileSize) {
 }
 
 void Game::startGame() {
-    InitWindow(xSize, ySize, "Game of Life");
-    SetTargetFPS(60);
+
+    if (showWindow) {
+        InitWindow(xSize, ySize, "Game of Life");
+        SetTargetFPS(60);
+    }
 
     initializeRandom();
 
-    BeginDrawing();
-    ClearBackground(RAYWHITE);
+    if (showWindow) {
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
 
-    displayGameBoard();
+        displayGameBoard();
 
-    EndDrawing();
+        EndDrawing();
+    }
 
     const int loopSpeed = 10;
     const int keyboardUpdateSpeed = 10;
@@ -49,7 +54,7 @@ void Game::startGame() {
 
     int counter = loopSpeed;
 
-    while (!WindowShouldClose()) {
+    while (!WindowShouldClose() || !showWindow) {
 
         if (counter > speed && counter > keyboardUpdateSpeed) counter = loopSpeed;
 
@@ -132,7 +137,7 @@ void Game::doGameLoop() {
 
     gameBoard = newGameBoard;
 
-    displayGameBoard();
+    if (showWindow) displayGameBoard();
 }
 
 void Game::resetBoard() {
