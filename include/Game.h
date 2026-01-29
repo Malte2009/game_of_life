@@ -17,7 +17,6 @@ class Game {
     int xTiles;
     int yTiles;
     bool showWindow;
-    std::chrono::steady_clock::time_point lastPainted;
 
     explicit Game(int newXSize, int newYSize, int tileSize, bool showWindow);
 

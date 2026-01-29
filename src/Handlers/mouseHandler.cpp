@@ -7,19 +7,25 @@
 
 void handleMouse(Game* game) {
 
-    const double msSinceLastClick = std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - game->lastPainted).count();
-
-    if (IsMouseButtonDown(0) && msSinceLastClick > 100) {
+    if (IsMouseButtonDown(0)) {
         const int mouseX = GetMouseX();
         const int mouseY = GetMouseY();
 
         const int mouseXTile = std::ceil(mouseX / game->tileSize);
         const int mouseYTile = std::ceil(mouseY / game->tileSize);
 
-        game->gameBoard[mouseXTile][mouseYTile] = !game->gameBoard[mouseXTile][mouseYTile];
+        game->gameBoard[mouseXTile][mouseYTile] = 1;
 
         game->displayGameBoard();
+    } else if (IsMouseButtonDown(1)) {
+        const int mouseX = GetMouseX();
+        const int mouseY = GetMouseY();
 
-        game->lastPainted = std::chrono::steady_clock::now();
+        const int mouseXTile = std::ceil(mouseX / game->tileSize);
+        const int mouseYTile = std::ceil(mouseY / game->tileSize);
+
+        game->gameBoard[mouseXTile][mouseYTile] = 0;
+
+        game->displayGameBoard();
     }
 }

@@ -27,7 +27,6 @@ Game::Game(const int XSize, const int YSize, int TileSize, bool showWindow) {
     speed = 100;
     isPaused = false;
     lastPressedKey = 0;
-    lastPainted = std::chrono::steady_clock::now();
 }
 
 void Game::startGame() {
@@ -50,7 +49,7 @@ void Game::startGame() {
 
     const int loopSpeed = 10;
     const int keyboardUpdateSpeed = 10;
-    const int mouseUpdateSpeed = 1;
+    const int mouseUpdateSpeed = 10;
 
     int counter = loopSpeed;
 
