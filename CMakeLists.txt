@@ -15,6 +15,8 @@ set(SOURCES
         include/Handlers/keyboardHandler.h
         src/Handlers/mouseHandler.cpp
         include/Handlers/mouseHandler.h
+        src/Spawner.cpp
+        src/Spawner.h
 )
 
 # Create executable

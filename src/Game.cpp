@@ -6,6 +6,8 @@
 #include <cmath>
 
 #include "../include/Game.h"
+
+#include "Spawner.h"
 #include "../include/Handlers/keyboardHandler.h"
 #include "../include/Handlers/mouseHandler.h"
 
@@ -36,16 +38,12 @@ void Game::startGame() {
         SetTargetFPS(60);
     }
 
-    initializeRandom();
+    //initializeRandom();
 
-    if (showWindow) {
-        BeginDrawing();
-        ClearBackground(RAYWHITE);
+    Spawner::spawnBlock(this, 20, 20);
 
-        displayGameBoard();
+    if (showWindow) displayGameBoard();
 
-        EndDrawing();
-    }
 
     const int loopSpeed = 10;
     const int keyboardUpdateSpeed = 10;
@@ -93,11 +91,11 @@ int Game::getAmountOfSurroundingLivingCells(const int x, const int y) const {
 
     for (int i = -1; i < 2; i++) {
         for (int j = -1; j < 2; j++) {
-            if (i == 0 & j == 0) continue;
+            if (i == 0 && j == 0) continue;
 
-            if (x + i < 0 | y + j < 0) continue;
+            if (x + i < 0 || y + j < 0) continue;
 
-            if (x + i >= xTiles | y + j >= yTiles) continue;
+            if (x + i >= xTiles || y + j >= yTiles) continue;
 
             surroundingLivingCells += gameBoard[x + i][y + j];
         }
@@ -148,50 +146,4 @@ void Game::resetBoard() {
             gameBoard[x][y] = 0;
         }
     }
-}
-
-
-void Game::spawnBlock(const int x, const int y) {
-    if (x + 1 >= xTiles | y + 1 >= yTiles) return;
-
-    gameBoard[x][y] = 1;
-    gameBoard[x + 1][y] = 1;
-    gameBoard[x][y + 1] = 1;
-    gameBoard[x + 1][y + 1] = 1;
-}
-
-void Game::spawnBeehive(const int x, const int y) {
-    if (x < 0 | y < 0) return;
-
-    if (x + 2 >= xTiles | y + 3 >= yTiles) return;
-
-    gameBoard[x + 1][y] = 1;
-    gameBoard[x][y + 1] = 1;
-    gameBoard[x][y + 2] = 1;
-    gameBoard[x + 1][y + 3] = 1;
-    gameBoard[x + 2][y + 1] = 1;
-    gameBoard[x + 2][y + 2] = 1;
-}
-
-void Game::spawnBlinker(const int x, const int y) {
-    if (x < 0 | y < 0) return;
-
-    if (x + 3 >= xTiles | y + 3 >= yTiles) return;
-
-    gameBoard[x + 1][y] = 1;
-    gameBoard[x + 1][y + 1] = 1;
-    gameBoard[x + 1][y + 2] = 1;
-}
-
-void Game::spawnToad(int x, int y) {
-    if (x < 0 | y < 0) return;
-
-    if (x + 3 >= xTiles | y + 3 >= yTiles) return;
-
-    gameBoard[x][y + 1] = 1;
-    gameBoard[x][y + 2] = 1;
-    gameBoard[x + 1][y + 3] = 1;
-    gameBoard[x + 2][y] = 1;
-    gameBoard[x + 3][y + 1] = 1;
-    gameBoard[x + 3][y + 2] = 1;
 }
