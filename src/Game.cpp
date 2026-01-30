@@ -24,7 +24,7 @@ Game::Game(const int XSize, const int YSize, int TileSize, bool showWindow) {
     xTiles = std::floor(xSize / tileSize);
     yTiles = std::floor(ySize / tileSize);
 
-    speed = 100;
+    speed = 10;
     isPaused = false;
     lastPressedKey = 0;
 }
@@ -54,6 +54,7 @@ void Game::startGame() {
     int counter = loopSpeed;
 
     while (!WindowShouldClose() || !showWindow) {
+        const auto startTime = std::chrono::high_resolution_clock::now();
 
         if (counter > speed && counter > keyboardUpdateSpeed) counter = loopSpeed;
 
@@ -64,6 +65,8 @@ void Game::startGame() {
         std::this_thread::sleep_for(std::chrono::milliseconds(loopSpeed));
 
         if (counter % speed == 0) doGameLoop();
+
+        if (counter % 10 == 0) std::cout << std::chrono::duration<double, std::milli>(std::chrono::high_resolution_clock::now() - startTime).count() << std::endl;
 
         counter += loopSpeed;
     }
