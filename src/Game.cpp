@@ -40,8 +40,6 @@ void Game::startGame() {
 
     //initializeRandom();
 
-    Spawner::spawnBlock(this, 20, 20);
-
     if (showWindow) displayGameBoard();
 
 

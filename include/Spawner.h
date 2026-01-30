@@ -9,6 +9,9 @@ class Spawner {
     static void spawnBeehive(Game* game, int x, int y);
     static void spawnBlinker(Game* game, int x, int y);
     static void spawnToad(Game* game, int x, int y);
+    static void spawnClock(Game* game, int x, int y);
+    static void spawnBeacon(Game* game, int x, int y);
+    static void spawnPulsar(Game* game, int x, int y);
 };
 
 
