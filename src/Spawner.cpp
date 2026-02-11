@@ -144,3 +144,84 @@ void Spawner::spawnPulsar(Game *game, int x, int y) {
     game->gameBoard[x + 15][y + 5] = 1;
     game->gameBoard[x + 15][y + 11] = 1;
 }
+
+void Spawner::spawnPentadecathlon(Game *game, int x, int y) {
+    if (x - 5 < 0  || y - 8 < 0) return;
+
+    if (x + 5 >= game->xTiles || y + 9 >= game->yTiles) return;
+
+    game->gameBoard[x][y - 2] = 1;
+    game->gameBoard[x][y - 5] = 1;
+    game->gameBoard[x][y + 3] = 1;
+    game->gameBoard[x][y + 6] = 1;
+
+    game->gameBoard[x + 1][y - 2] = 1;
+    game->gameBoard[x + 1][y - 5] = 1;
+    game->gameBoard[x + 1][y + 3] = 1;
+    game->gameBoard[x + 1][y + 6] = 1;
+
+    game->gameBoard[x - 1][y - 2] = 1;
+    game->gameBoard[x - 1][y - 5] = 1;
+    game->gameBoard[x - 1][y + 3] = 1;
+    game->gameBoard[x - 1][y + 6] = 1;
+
+    game->gameBoard[x + 2][y - 3] = 1;
+    game->gameBoard[x + 2][y - 4] = 1;
+
+    game->gameBoard[x - 2][y - 3] = 1;
+    game->gameBoard[x - 2][y - 4] = 1;
+
+    game->gameBoard[x + 2][y + 4] = 1;
+    game->gameBoard[x + 2][y + 5] = 1;
+
+    game->gameBoard[x - 2][y + 4] = 1;
+    game->gameBoard[x - 2][y + 5] = 1;
+}
+
+void Spawner::spawnSimkinGliderGun(Game *game, int x, int y) {
+    if (x - 17 < 0  || y - 11 < 0) return;
+
+    if (x + 17 >= game->xTiles || y + 11 >= game->yTiles) return;
+
+    game -> gameBoard[x - 11][y - 6] = 1;
+    game -> gameBoard[x - 12][y - 6] = 1;
+    game -> gameBoard[x - 11][y - 7] = 1;
+    game -> gameBoard[x - 12][y - 7] = 1;
+
+    game -> gameBoard[x - 8][y - 9] = 1;
+    game -> gameBoard[x - 9][y - 9] = 1;
+    game -> gameBoard[x - 9][y - 10] = 1;
+    game -> gameBoard[x - 8][y - 10] = 1;
+
+    game -> gameBoard[x - 15][y - 9] = 1;
+    game -> gameBoard[x - 16][y - 9] = 1;
+    game -> gameBoard[x - 15][y - 10] = 1;
+    game -> gameBoard[x - 16][y - 10] = 1;
+
+    game->gameBoard[x + 5][y] = 1;
+    game->gameBoard[x + 5][y + 1] = 1;
+    game->gameBoard[x + 5][y + 2] = 1;
+    game->gameBoard[x + 6][y - 1] = 1;
+    game->gameBoard[x + 6][y + 2] = 1;
+    game->gameBoard[x + 7][y - 1] = 1;
+    game->gameBoard[x + 7][y + 2] = 1;
+    game->gameBoard[x + 9][y - 1] = 1;
+    game->gameBoard[x + 10][y - 1] = 1;
+    game->gameBoard[x + 10][y + 3] = 1;
+    game->gameBoard[x + 11][y] = 1;
+    game->gameBoard[x + 11][y + 2] = 1;
+    game->gameBoard[x + 12][y + 1] = 1;
+
+    game->gameBoard[x + 15][y + 1] = 1;
+    game->gameBoard[x + 15][y + 2] = 1;
+    game->gameBoard[x + 16][y + 1] = 1;
+    game->gameBoard[x + 16][y + 2] = 1;
+
+    game->gameBoard[x + 4][y + 7] = 1;
+    game->gameBoard[x + 4][y + 8] = 1;
+    game->gameBoard[x + 5][y + 7] = 1;
+    game->gameBoard[x + 5][y + 9] = 1;
+    game->gameBoard[x + 6][y + 9] = 1;
+    game->gameBoard[x + 7][y + 9] = 1;
+    game->gameBoard[x + 7][y + 10] = 1;
+}

@@ -18,19 +18,15 @@ class Game {
     int yTiles;
     bool showWindow;
 
-    explicit Game(int newXSize, int newYSize, int tileSize, bool showWindow);
+    explicit Game(int xSize, int ySize, int tileSize, bool showWindow);
 
     void startGame();
     void initializeRandom();
-    void displayGameBoard();
+    void displayGameBoard() const;
     void resetBoard();
 
     private:
     int getAmountOfSurroundingLivingCells(int x, int y) const;
-    void spawnBlock(int x, int y);
-    void spawnBeehive(int x, int y);
-    void spawnBlinker(int x, int y);
-    void spawnToad(int x, int y);
 
     void doGameLoop();
 };

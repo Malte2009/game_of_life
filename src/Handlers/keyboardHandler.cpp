@@ -7,7 +7,7 @@ void handleKeyboard(Game* game) {
 
     int pressedKey = GetKeyPressed();
     switch (pressedKey) {
-        case 32:
+        case KEY_SPACE:
             // space
             game->isPaused = !game->isPaused;
             break;

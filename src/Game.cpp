@@ -12,13 +12,13 @@
 #include "../include/Handlers/mouseHandler.h"
 
 
-Game::Game(const int XSize, const int YSize, int TileSize, bool showWindow) {
+Game::Game(const int xSize, const int ySize, const int tileSize, const bool showWindow) {
 
-    if (TileSize <= 1) exit(1);
+    if (tileSize <= 1) exit(1);
 
-    this->xSize = XSize;
-    this->ySize = YSize;
-    this->tileSize = TileSize;
+    this->xSize = xSize;
+    this->ySize = ySize;
+    this->tileSize = tileSize;
     this->showWindow = showWindow;
 
     gameBoard = std::vector<std::vector<int>>(xSize, std::vector<int>(ySize, 0));
@@ -38,25 +38,23 @@ void Game::startGame() {
         SetTargetFPS(60);
     }
 
-    //initializeRandom();
+    initializeRandom();
 
     if (showWindow) displayGameBoard();
 
 
-    const int loopSpeed = 10;
-    const int keyboardUpdateSpeed = 10;
-    const int mouseUpdateSpeed = 10;
+    constexpr int loopSpeed = 10;
 
     int counter = loopSpeed;
 
     while (!WindowShouldClose() || !showWindow) {
         const auto startTime = std::chrono::high_resolution_clock::now();
 
-        if (counter > speed && counter > keyboardUpdateSpeed) counter = loopSpeed;
+        if (counter > speed) counter = loopSpeed;
 
-        if (counter % keyboardUpdateSpeed == 0) handleKeyboard(this);
+        handleKeyboard(this);
 
-        if (counter % mouseUpdateSpeed == 0) handleMouse(this);
+        handleMouse(this);
 
         std::this_thread::sleep_for(std::chrono::milliseconds(loopSpeed));
 
@@ -70,7 +68,7 @@ void Game::startGame() {
     CloseWindow();
 }
 
-void Game::displayGameBoard() {
+void Game::displayGameBoard() const {
     BeginDrawing();
     ClearBackground(RAYWHITE);
 

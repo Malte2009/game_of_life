@@ -12,6 +12,8 @@ class Spawner {
     static void spawnClock(Game* game, int x, int y);
     static void spawnBeacon(Game* game, int x, int y);
     static void spawnPulsar(Game* game, int x, int y);
+    static void spawnPentadecathlon(Game* game, int x, int y);
+    static void spawnSimkinGliderGun(Game* game, int x, int y);
 };
 
 
